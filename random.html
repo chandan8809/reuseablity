@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/styles/navbar.css">
+    <style>
+        body{
+            margin: 0px;
+        }
+        img{
+            width: 200px;
+        }
+        .main{
+            text-align: center;
+        }
+        .food{
+            display: grid;
+            grid-template-columns: repeat(5,1fr);
+            grid-gap: 25px;
+            width: 90%;
+            margin: auto;
+        }
+        #details{
+            padding: 5px 20px;
+            margin:20px
+            
+        }
+        #maindiv{
+            border: 1px solid gray;
+            padding: 10px;
+            animation: .5s linear 0s infinite vib;
+        }
+        @keyframes vib{
+            0%{
+                transform: rotate(0deg);
+            }
+            25%{
+                transform: rotate(2deg); 
+            }
+            50%{
+                transform: rotate(0deg);
+            }
+            75%{
+                transform: rotate(-2deg);
+            }
+            100%{
+                transform: rotate(0deg);
+            }
+
+
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container"></div>
+    <div class="main">
+        <div class="search">
+            <input type="text" placeholder="Search food" id="details">
+            <button id="cl">search</button>
+        </div>
+        <div class="food"></div>
+    </div>
+    
+    
+</body>
+</html>
+<script type="module">
+    document.querySelector("#details").addEventListener("input",getdata)
+
+
+    import navbar from "./components/navbar.js"
+    document.querySelector(".container").innerHTML=navbar()
+
+    async function getdata(){
+        console.log("here")
+        let name=document.querySelector("#details").value
+        let res=await fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=${name}`)
+        let data=await res.json()
+        let arr=data.meals
+        console.log(arr)
+        display(arr)
+    }
+    getdata()
+
+    function display(arr){
+        document.querySelector(".food").textContent=""
+        
+        arr.map((elem)=>{
+            var imgdiv=document.createElement("div")
+            var contdiv=document.createElement("div")
+            var maindiv=document.createElement("div")
+
+            var image=document.createElement("img")
+            image.src=elem.strMealThumb
+            imgdiv.append(image)
+            var para=document.createElement("p")
+            para.textContent=elem.strMeal
+           
+
+
+            contdiv.append(para)
+            maindiv.append(imgdiv,contdiv)
+            maindiv.id="maindiv"
+            document.querySelector(".food").append(maindiv)
+
+            
+        })
+       
+    }
+
+
+</script>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./styles/navbar.css">
+    <style>
+        img{
+            width: 250px;
+            border-radius: 10px;
+        }
+        .main{
+            display: grid;
+            grid-template-columns: repeat(4,1fr);
+            border: 1px solid transparent;
+            
+            text-align: center;
+            grid-gap: 30px;
+            margin-top: 30px;
+            
+        }
+        #maindiv{
+            border: 1px solid grey;
+            padding: 10px;
+            background-color: honeydew;
+            transition: 0.5s;
+            border-radius: 10px;
+            
+        }
+        body{
+            margin: 0px;
+        }
+        #maindiv:hover{
+            background-color: palevioletred;
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="container"></div>
+    <div class="main">
+
+    </div>
+    
+   
+</body>
+</html>
+<script type="module">
+    import navbar from "./components/navbar.js"
+    console.log(navbar)
+    document.querySelector(".container").innerHTML=navbar()
+
+    async function getdata(){
+        let res=await fetch("https://www.themealdb.com/api/json/v1/1/search.php?f=b")
+        let data=await res.json()
+        let arr=data.meals
+        console.log(arr)
+        display(arr)
+    }
+    getdata()
+
+    function display(arr){
+        arr.map((elem)=>{
+        
+        
+            var maindiv=document.createElement("div")
+
+            var image=document.createElement("img")
+            image.src=elem.strMealThumb
+            var para=document.createElement("p")
+            para.textContent=elem.strTags
+            maindiv.append(image,para)
+            maindiv.id="maindiv"
+            document.querySelector(".main").append(maindiv)
+
+            
+        })
+       
+    }
+
+
+
+
+
+
+
+</script>
